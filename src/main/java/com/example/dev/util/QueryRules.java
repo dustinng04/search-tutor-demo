@@ -20,8 +20,7 @@ public class QueryRules {
     );
 
     public static final QueryRule RATING_QUERY = QueryRule.of(
-//            srp -> Objects.nonNull(srp.rating()),
-            Predicates.isTrue(),
+            srp -> Objects.nonNull(srp.rating()),
             srp -> ElasticSearchUtil.buildRangeQuery(RATING, builder -> builder.gte(srp.rating()))
     );
 
@@ -33,17 +32,15 @@ public class QueryRules {
     );
 
     public static final List<String> SEARCH_BOOST_FIELDS = List.of(
-            boostField(NAME, 2.0f),
-            boostField(SUBJECT, 1.5f),
-            boostField(LEVEL, 1.0f),
-            boostField(RATING, 1.0f),
-            DESCRIPTION
+            boostField(NAME, 3.0f),        // Highest boost - tutor name is most important
+            boostField(DESCRIPTION, 2.5f), // High boost - description contains detailed info
+            boostField(SUBJECT, 1.5f),     // Medium boost - subject is important but categorical
+            boostField(LEVEL, 1.0f)        // Lower boost - level is more of a filter than search target
     );
 
     public static final QueryRule SEARCH_QUERY = QueryRule.of(
-//            srp -> Objects.nonNull(srp.query()),
-            Predicates.isTrue(),
-            srp -> ElasticSearchUtil.buildMultimatchQuery(SEARCH_BOOST_FIELDS, srp.query())
+            srp -> Objects.nonNull(srp.query()) && !srp.query().trim().isEmpty(),
+            srp -> ElasticSearchUtil.buildMultimatchQuery(List.of(NAME, DESCRIPTION), srp.query())
     );
 
     public static String boostField(String field, float boost) {

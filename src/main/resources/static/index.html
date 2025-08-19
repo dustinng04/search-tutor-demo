@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Your Perfect Tutor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .step-card {
+            transition: all 0.3s ease;
+        }
+        .step-card.active {
+            transform: scale(1.02);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .option-card {
+            transition: all 0.2s ease;
+        }
+        .option-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .option-card.selected {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .time-slot {
+            transition: all 0.2s ease;
+        }
+        .time-slot:hover {
+            background-color: #f3f4f6;
+        }
+        .time-slot.selected {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-gray-800 mb-4">Find Your Perfect Tutor</h1>
+            <p class="text-lg text-gray-600">Let's help you find the ideal tutor for your learning journey</p>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="max-w-2xl mx-auto mb-8">
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center">
+                    <div id="step1-indicator" class="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center text-sm font-semibold">1</div>
+                    <span class="ml-2 text-sm font-medium text-gray-700">Subject</span>
+                </div>
+                <div class="flex-1 h-1 mx-4 bg-gray-200 rounded">
+                    <div id="progress-bar" class="h-1 bg-blue-500 rounded transition-all duration-300" style="width: 33%"></div>
+                </div>
+                <div class="flex items-center">
+                    <div id="step2-indicator" class="w-8 h-8 rounded-full bg-gray-300 text-gray-600 flex items-center justify-center text-sm font-semibold">2</div>
+                    <span class="ml-2 text-sm font-medium text-gray-500">Level</span>
+                </div>
+                <div class="flex-1 h-1 mx-4 bg-gray-200 rounded">
+                    <div class="h-1 bg-gray-200 rounded"></div>
+                </div>
+                <div class="flex items-center">
+                    <div id="step3-indicator" class="w-8 h-8 rounded-full bg-gray-300 text-gray-600 flex items-center justify-center text-sm font-semibold">3</div>
+                    <span class="ml-2 text-sm font-medium text-gray-500">Availability</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step Cards Container -->
+        <div class="max-w-4xl mx-auto">
+            <!-- Step 1: Subject Selection -->
+            <div id="step1" class="step-card active bg-white rounded-xl shadow-lg p-8 mb-8">
+                <div class="text-center mb-8">
+                    <i class="fas fa-book text-4xl text-blue-500 mb-4"></i>
+                    <h2 class="text-2xl font-bold text-gray-800 mb-2">What subject do you want to learn?</h2>
+                    <p class="text-gray-600">Choose the subject you'd like to get help with</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                    <div class="option-card cursor-pointer p-6 border-2 border-gray-200 rounded-lg text-center" data-subject="Mathematics">
+                        <i class="fas fa-calculator text-3xl text-blue-500 mb-3"></i>
+                        <h3 class="font-semibold text-gray-800">Mathematics</h3>
+                        <p class="text-sm text-gray-600 mt-2">Algebra, Calculus, Statistics</p>
+                    </div>
+                    <div class="option-card cursor-pointer p-6 border-2 border-gray-200 rounded-lg text-center" data-subject="Physics">
+                        <i class="fas fa-atom text-3xl text-green-500 mb-3"></i>
+                        <h3 class="font-semibold text-gray-800">Physics</h3>
+                        <p class="text-sm text-gray-600 mt-2">Mechanics, Thermodynamics, Quantum</p>
+                    </div>
+                    <div class="option-card cursor-pointer p-6 border-2 border-gray-200 rounded-lg text-center" data-subject="English Literature">
+                        <i class="fas fa-feather-alt text-3xl text-purple-500 mb-3"></i>
+                        <h3 class="font-semibold text-gray-800">English Literature</h3>
+                        <p class="text-sm text-gray-600 mt-2">Poetry, Novels, Essays</p>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <button id="next-step1" class="bg-blue-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-600 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed" disabled>
+                        Continue <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 2: Level Selection -->
+            <div id="step2" class="step-card bg-white rounded-xl shadow-lg p-8 mb-8 hidden">
+                <div class="text-center mb-8">
+                    <i class="fas fa-graduation-cap text-4xl text-green-500 mb-4"></i>
+                    <h2 class="text-2xl font-bold text-gray-800 mb-2">What's your current level?</h2>
+                    <p class="text-gray-600">This helps us match you with the right tutor</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                    <div class="option-card cursor-pointer p-6 border-2 border-gray-200 rounded-lg text-center" data-level="High School">
+                        <i class="fas fa-school text-3xl text-blue-500 mb-3"></i>
+                        <h3 class="font-semibold text-gray-800">High School</h3>
+                        <p class="text-sm text-gray-600 mt-2">Grade 9-12 level</p>
+                    </div>
+                    <div class="option-card cursor-pointer p-6 border-2 border-gray-200 rounded-lg text-center" data-level="Undergraduate">
+                        <i class="fas fa-university text-3xl text-purple-500 mb-3"></i>
+                        <h3 class="font-semibold text-gray-800">Undergraduate</h3>
+                        <p class="text-sm text-gray-600 mt-2">Bachelor's degree level</p>
+                    </div>
+                </div>
+
+                <div class="flex justify-center space-x-4">
+                    <button id="skip-step2" class="bg-gray-300 text-gray-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-400 transition-colors">
+                        Skip <i class="fas fa-forward ml-2"></i>
+                    </button>
+                    <button id="next-step2" class="bg-blue-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-600 transition-colors">
+                        Continue <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 3: Availability Selection -->
+            <div id="step3" class="step-card bg-white rounded-xl shadow-lg p-8 mb-8 hidden">
+                <div class="text-center mb-8">
+                    <i class="fas fa-clock text-4xl text-purple-500 mb-4"></i>
+                    <h2 class="text-2xl font-bold text-gray-800 mb-2">When are you available?</h2>
+                    <p class="text-gray-600">Select your preferred time slots (optional)</p>
+                </div>
+                
+                <div id="availability-grid" class="space-y-6 mb-8">
+                    <!-- Days will be generated dynamically -->
+                </div>
+
+                <div class="flex justify-center space-x-4">
+                    <button id="skip-step3" class="bg-gray-300 text-gray-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-400 transition-colors">
+                        Skip <i class="fas fa-forward ml-2"></i>
+                    </button>
+                    <button id="search-tutors" class="bg-green-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-green-600 transition-colors">
+                        Find Tutors <i class="fas fa-search ml-2"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Search Results -->
+            <div id="search-results" class="bg-white rounded-xl shadow-lg p-8 hidden">
+                <div class="text-center mb-8">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-2">Search Results</h2>
+                    <p class="text-gray-600">Here are the tutors that match your criteria</p>
+                </div>
+
+                <!-- Search Refinement Panel -->
+                <div class="bg-gray-50 rounded-lg p-6 mb-8">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Refine Your Search</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <!-- Search Query Input -->
+                        <div>
+                            <label for="search-query" class="block text-sm font-medium text-gray-700 mb-2">
+                                Search Query
+                            </label>
+                            <input 
+                                type="text" 
+                                id="search-query" 
+                                placeholder="e.g., experienced, calculus, beginner-friendly..."
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            >
+                        </div>
+
+                        <!-- Rating Selection -->
+                        <div>
+                            <label for="rating-select" class="block text-sm font-medium text-gray-700 mb-2">
+                                Minimum Rating
+                            </label>
+                            <select 
+                                id="rating-select" 
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            >
+                                <option value="">Any Rating</option>
+                                <option value="2.0">2.0+ ⭐⭐</option>
+                                <option value="2.5">2.5+ ⭐⭐</option>
+                                <option value="3.0">3.0+ ⭐⭐⭐</option>
+                                <option value="3.5">3.5+ ⭐⭐⭐</option>
+                                <option value="4.0">4.0+ ⭐⭐⭐⭐</option>
+                                <option value="4.5">4.5+ ⭐⭐⭐⭐⭐</option>
+                            </select>
+                        </div>
+
+                        <!-- Search Button -->
+                        <div class="flex items-end">
+                            <button 
+                                id="refined-search-btn" 
+                                class="w-full bg-green-500 text-white px-4 py-2 rounded-md font-semibold hover:bg-green-600 transition-colors focus:outline-none focus:ring-2 focus:ring-green-500"
+                            >
+                                <i class="fas fa-search mr-2"></i>
+                                Search
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="loading" class="text-center py-12 hidden">
+                    <i class="fas fa-spinner fa-spin text-4xl text-blue-500 mb-4"></i>
+                    <p class="text-gray-600">Searching for tutors...</p>
+                </div>
+                
+                <div id="results-container">
+                    <!-- Results will be populated here -->
+                </div>
+                
+                <div class="text-center mt-8">
+                    <button id="new-search" class="bg-blue-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-600 transition-colors">
+                        <i class="fas fa-redo mr-2"></i> New Search
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

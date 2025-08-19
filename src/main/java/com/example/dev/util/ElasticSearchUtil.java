@@ -53,6 +53,48 @@ public class ElasticSearchUtil {
         return Query.of(builder -> builder.multiMatch(multiMatchQuery));
     }
 
+    public static Query buildContainsQuery(List<String> fields, String searchTerm) {
+        if (searchTerm == null || searchTerm.trim().isEmpty()) {
+            return Query.of(builder -> builder.matchAll(MatchAllQuery.of(b -> b)));
+        }
+
+        // Create wildcard queries for each field to support "contains" functionality
+        List<Query> fieldQueries = new ArrayList<>();
+        String wildcardTerm = "*" + searchTerm.toLowerCase() + "*";
+        
+        for (String fieldWithBoost : fields) {
+            String field;
+            float boost;
+
+            // Parse field boost if present (e.g., "name^3.0")
+            if (fieldWithBoost.contains("^")) {
+                String[] parts = fieldWithBoost.split("\\^");
+                field = parts[0];
+                boost = Float.parseFloat(parts[1]);
+            } else {
+                boost = 1.0f;
+                field = fieldWithBoost;
+            }
+            
+            var wildcardQuery = WildcardQuery.of(builder -> builder
+                    .field(field)
+                    .value(wildcardTerm)
+                    .boost(boost)
+                    .caseInsensitive(true)
+            );
+            
+            fieldQueries.add(Query.of(builder -> builder.wildcard(wildcardQuery)));
+        }
+        
+        // Combine all field queries with OR (should match any field)
+        if (fieldQueries.size() == 1) {
+            return fieldQueries.get(0);
+        } else {
+            var boolQuery = BoolQuery.of(builder -> builder.should(fieldQueries));
+            return Query.of(builder -> builder.bool(boolQuery));
+        }
+    }
+
     public static Query buildAvailabilityQuery(String availabilityPath, String dayField, 
                                               String startTimeField, String endTimeField, 
                                               List<AvailabilityRange> availabilities) {

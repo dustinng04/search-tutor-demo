@@ -27,6 +27,7 @@ public class SearchService {
         log.info("bool query: {}", query.getQuery());
 
         var searchHits = elasticsearchOperations.search(query, Teacher.class, Constants.Index.TUTORS);
+        log.info("hits found: {}", searchHits.getTotalHits());
         return buildResponse(params, searchHits);
     }
 
